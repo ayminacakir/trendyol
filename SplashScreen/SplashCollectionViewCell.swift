@@ -1,49 +1,116 @@
 import UIKit
 
-class SplashScreenPage: UICollectionViewCell {
-    // SplashScreenPage, UICollectionViewCell sınıfından türetilmiş özel bir hücre sınıfıdır.Bu hücre, koleksiyon görünümünde (CollectionView) her bir sayfayı temsil eder.
+class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her bir sayfanın nasıl görüneceğini tanımlar
+
+    static let identifier = "SplashScreenPage"
+
+    private let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.translatesAutoresizingMaskIntoConstraints = false // AutoLayout kullanımı için gerekli
+        iv.contentMode = .scaleAspectFill // Görsel, çerçeveyi dolduracak ama oran korunacak
+        iv.clipsToBounds = true // Taşan kısımlar kesilecek
+        return iv
+    }()
     
-    static let identifier = "SplashScreenPage" //hücreyi collectionview da tanımlamak için benzersiz bir kimlik sunar
+    private let titleLabel: UILabel = {
+        let label = UILabel()  //UILabel sınıfından bir nesne oluşturuluyor.
+        label.font = .boldSystemFont(ofSize: 24) // Yazı tipi kalın (bold) ve boyutu 24 punto olarak ayarlanıyor.
+        label.textAlignment = .center //Yazı yatayda ortalanarak hizalanıyor
+        label.textColor = .black
+        label.numberOfLines = 0 //Satır sayısı sınırsız (yani içerik kaç satır ise o kadar yer kaplar).
+        return label
+    }()
     
-    private let titleLabel = UILabel() //private çünkü sadece hücre içinde kullanılacak
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()  //Apple’ın UIKit kütüphanesinde tanımlı olan bir sınıf
+        label.font = .systemFont(ofSize: 16)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.numberOfLines = 0
+        return label
+    }()
     
-    override init (frame: CGRect) { //genişliğini, yüksekliğini, konumunu
+    
+    //UIStackView,iOS’ta birden fazla view’ı (örneğin UILabel, UIButton, UIImageView gibi) dikey veya yatay olarak düzenli bir şekilde sıralamak için kullanılan bir bileşendir.
+    private let stackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical //Alt elemanlar dikey olarak (üstten aşağıya) yerleştirilecek.
+        sv.spacing = 25
+        sv.alignment = .center
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        return sv
+    }()
+    
+    private let imageContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.20
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowRadius = 10
+        return view
+    }()
+
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .systemGray6 //hücreyi görmen için geçici bir arka plan.
+        contentView.backgroundColor = UIColor(red: 1.0, green: 0.48, blue: 0.0, alpha: 1.0) // Açık turuncu
         setupViews()
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    
-    
-    func configure(with data: SplashScreenData){
-        titleLabel.text = data.title //Hücreye dışarıdan veri                                   aktarımı yapabilmeni sağlar.
+        fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setupViews(){
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false //Auto Layout sistemini kullanacağımızı belirtir false yazmak şarttır.
-        titleLabel.font = .boldSystemFont(ofSize: 24)
-        titleLabel.textAlignment = .center //metni otaya hizalar
-        contentView.addSubview(titleLabel) //Label’ı ekranda gösterir
+
+    func configure(with data: SplashScreenData, isLastPage: Bool) {
+        imageView.image = data.image
+        titleLabel.text = data.title
+        descriptionLabel.text = data.description
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageContainerView.layer.cornerRadius = imageContainerView.frame.size.width / 2
+        imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        //Aynı şekilde, içinde bulunan imageView da yuvarlatılıyor, tam bir çember oluyor.
+        imageView.clipsToBounds = true //Yuvarlatılan köşelerin dışındaki görüntülerin kesilmesini sağlar.
+    }
+
+    private func setupViews() {
+        contentView.addSubview(stackView)  //contentView, bir hücre (UITableViewCell veya UICollectionViewCell) içinde yer alan asıl içerik alanıdır.
+        stackView.addArrangedSubview(imageContainerView)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(descriptionLabel)
+        
+        stackView.setCustomSpacing(40, after: imageContainerView) //imageContainerView ile sonraki öğe (titleLabel) arasında 40 puanlık özel boşluk ayarlanıyor.
+
+        
+        imageContainerView.addSubview(imageView)
+        
+        imageView.layer.borderWidth = 4
+        imageView.layer.borderColor = UIColor.black.cgColor
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-          
+            // StackView tam ortada
+            stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 30),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -30),
+            
+            // Görsel kare ve yuvarlak olacak şekilde
+            imageContainerView.widthAnchor.constraint(equalToConstant: 180),
+            imageContainerView.heightAnchor.constraint(equalTo: imageContainerView.widthAnchor),
+            
+            imageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor), //imageView'in üst kenarı, imageContainerView'in üst kenarına eşit olacak.Yani, imageView tam olarak imageContainerView'in en üstünden başlayacak.
+
+
+            imageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
         ])
-
+        contentView.layoutIfNeeded() //Bunları yaparsan imageView ve imageContainerView ilk görünüşte yuvarlak olur.
     }
-    
-    
-    
-    
-    
-    
 }
-
-
