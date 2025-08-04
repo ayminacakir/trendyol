@@ -93,12 +93,17 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
     }
 
     private func setupConstraints() {
+        descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
+
+        
         NSLayoutConstraint.activate([
             // StackView tam ortada
             stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 30),
             stackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -30),
+            
             
             // Görsel kare ve yuvarlak olacak şekilde
             imageContainerView.widthAnchor.constraint(equalToConstant: 180),
@@ -110,6 +115,9 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
             imageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
+            
+            
+
         ])
         contentView.layoutIfNeeded() //Bunları yaparsan imageView ve imageContainerView ilk görünüşte yuvarlak olur.
     }
