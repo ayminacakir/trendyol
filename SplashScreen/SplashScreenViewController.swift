@@ -167,9 +167,9 @@ class SplashScreenViewController: UIViewController, UICollectionViewDataSource, 
     
     
     private func navigateToMainScreen() {
-        let mainVC = UIViewController() // kendi ana sayfa viewController’ını kullan
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: true, completion: nil)
+        let loginVC = LoginViewController()
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true, completion: nil)
     }
     
     
@@ -201,13 +201,6 @@ class SplashScreenViewController: UIViewController, UICollectionViewDataSource, 
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] _ in
                 self?.goToNextPage()
             }
-            
-            
-            
         }
-        
-        
-        
     }
-    
 }
