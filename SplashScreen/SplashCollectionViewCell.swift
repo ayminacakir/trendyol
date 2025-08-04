@@ -1,16 +1,18 @@
 import UIKit
+import Lottie
 
 class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her bir sayfanın nasıl görüneceğini tanımlar
 
     static let identifier = "SplashScreenPage"
 
-    private let imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.translatesAutoresizingMaskIntoConstraints = false // AutoLayout kullanımı için gerekli
-        iv.contentMode = .scaleAspectFill // Görsel, çerçeveyi dolduracak ama oran korunacak
-        iv.clipsToBounds = true // Taşan kısımlar kesilecek
-        return iv
+    private let animationView: LottieAnimationView = {
+        let animView = LottieAnimationView()
+        animView.translatesAutoresizingMaskIntoConstraints = false
+        animView.contentMode = .scaleAspectFill
+        animView.loopMode = .loop
+        return animView
     }()
+
     
     private let titleLabel: UILabel = {
         let label = UILabel()  //UILabel sınıfından bir nesne oluşturuluyor.
@@ -64,7 +66,8 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
     }
 
     func configure(with data: SplashScreenData, isLastPage: Bool) {
-        imageView.image = data.image
+        animationView.animation = LottieAnimation.named(data.animationName)
+            animationView.play()
         titleLabel.text = data.title
         descriptionLabel.text = data.description
     }
@@ -72,9 +75,9 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
     override func layoutSubviews() {
         super.layoutSubviews()
         imageContainerView.layer.cornerRadius = imageContainerView.frame.size.width / 2
-        imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        animationView.layer.cornerRadius = animationView.frame.size.width / 2
         //Aynı şekilde, içinde bulunan imageView da yuvarlatılıyor, tam bir çember oluyor.
-        imageView.clipsToBounds = true //Yuvarlatılan köşelerin dışındaki görüntülerin kesilmesini sağlar.
+        animationView.clipsToBounds = true //Yuvarlatılan köşelerin dışındaki görüntülerin kesilmesini sağlar.
     }
 
     private func setupViews() {
@@ -86,10 +89,9 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
         stackView.setCustomSpacing(40, after: imageContainerView) //imageContainerView ile sonraki öğe (titleLabel) arasında 40 puanlık özel boşluk ayarlanıyor.
 
         
-        imageContainerView.addSubview(imageView)
+        imageContainerView.addSubview(animationView)
         
-        imageView.layer.borderWidth = 4
-        imageView.layer.borderColor = UIColor.black.cgColor
+        
     }
 
     private func setupConstraints() {
@@ -109,12 +111,12 @@ class SplashCollectionViewCell: UICollectionViewCell { //splash screen'deki her 
             imageContainerView.widthAnchor.constraint(equalToConstant: 180),
             imageContainerView.heightAnchor.constraint(equalTo: imageContainerView.widthAnchor),
             
-            imageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor), //imageView'in üst kenarı, imageContainerView'in üst kenarına eşit olacak.Yani, imageView tam olarak imageContainerView'in en üstünden başlayacak.
+            animationView.topAnchor.constraint(equalTo: imageContainerView.topAnchor), //imageView'in üst kenarı, imageContainerView'in üst kenarına eşit olacak.Yani, imageView tam olarak imageContainerView'in en üstünden başlayacak.
 
 
-            imageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
+            animationView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
+            animationView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
+            animationView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
             
             
 

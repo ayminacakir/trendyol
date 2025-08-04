@@ -1,12 +1,14 @@
 import UIKit
+import Lottie
+
 
 class SplashScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     
     private let pages: [SplashScreenData] = [
-        SplashScreenData(image: UIImage(named: "logo")!, title: "Hoş Geldin!", description: "Sana özel fırsatlar ve eşsiz bir alışveriş deneyimi için uygulamayı hemen keşfetmeye başla."),
-        SplashScreenData(image: UIImage(named: "kesfet")!, title: "Keşfet!", description: "Binlerce ürünü kolayca incele, dilediğini favorilerine ekle ve ihtiyaçlarına en uygun seçenekleri bul." ),
-        SplashScreenData(image: UIImage(named: "alışveris-sepeti")!, title: "Hazırsın!", description: "Favorilerini sepetine ekle, kampanyaları kaçırmadan alışverişini güvenle tamamla.         Şimdi başlama zamanı!" )
+        SplashScreenData(animationName: "welcome", title: "Hoş Geldin!", description: "Sana özel fırsatlar ve eşsiz bir alışveriş deneyimi için uygulamayı hemen keşfetmeye başla."),
+        SplashScreenData(animationName: "explore", title: "Keşfet!", description: "Binlerce ürünü kolayca incele, dilediğini favorilerine ekle ve ihtiyaçlarına en uygun seçenekleri bul." ),
+        SplashScreenData(animationName: "ready", title: "Hazırsın!", description: "Favorilerini sepetine ekle, kampanyaları kaçırmadan alışverişini güvenle tamamla.         Şimdi başlama zamanı!" )
     ]
     
     private let splashCollectionView: UICollectionView = {

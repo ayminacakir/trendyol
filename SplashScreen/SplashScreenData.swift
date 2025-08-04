@@ -1,7 +1,7 @@
 import UIKit
-
+import Lottie
 struct SplashScreenData {
-    let image: UIImage
+    let animationName: String
     let title: String
     let description: String
    
