@@ -44,6 +44,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E7031E852E415A4C00D8F203 /* LoginPage */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LoginPage;
+			sourceTree = "<group>";
+		};
 		E7A33ACB2E3B2CC600A0602A /* trendyol */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -98,6 +103,7 @@
 		E7A33AC02E3B2CC600A0602A = {
 			isa = PBXGroup;
 			children = (
+				E7031E852E415A4C00D8F203 /* LoginPage */,
 				E7A33B1C2E3B30F900A0602A /* SplashScreen */,
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
 				E7A33AE52E3B2CC800A0602A /* trendyolTests */,
@@ -140,6 +146,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				E7031E852E415A4C00D8F203 /* LoginPage */,
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
 				E7A33B1C2E3B30F900A0602A /* SplashScreen */,
 			);
