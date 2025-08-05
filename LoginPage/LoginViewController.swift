@@ -90,6 +90,7 @@ class LoginViewController: UIViewController {
         setupLayout() //Ekrandaki UI elemanlarını yerleştiren fonksiyonu çağırır.
         
         signUpButton.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
+        forgotPasswordButton.addTarget(self, action: #selector(goToForgotPasswordPage), for: .touchUpInside)
     }
     
     @objc private func goToRegister() {
@@ -97,7 +98,12 @@ class LoginViewController: UIViewController {
         registerVC.modalPresentationStyle = .fullScreen
         present(registerVC, animated: true)
     }
-
+    
+    @objc private func goToForgotPasswordPage() {
+        let passwordVC = ForgotPasswordViewController()
+        passwordVC.modalPresentationStyle = .fullScreen
+        present(passwordVC, animated: true)
+    }
     
     private func setupLayout() {
         view.addSubview(containerView)

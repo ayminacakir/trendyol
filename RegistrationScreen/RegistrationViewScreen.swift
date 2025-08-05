@@ -76,11 +76,12 @@ class RegistrationViewScreen: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad() //  //  UIKit sistemi çalıştır
-        view.backgroundColor = .white //  Arka planı hazırla
+        view.backgroundColor = .orange //  Arka planı hazırla
         setupLayout() // UI bileşenlerini oluştur ve ekrana yerleştir
         
         registerButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
         alreadyHaveAccountButton.addTarget(self, action: #selector(goToLogin), for: .touchUpInside)
+        
 
     }
     
