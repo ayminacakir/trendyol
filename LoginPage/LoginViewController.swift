@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    private let emailTextField: UITextField = {
+    private let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Kullanıcı Adı"
         tf.borderStyle = .roundedRect
@@ -88,12 +88,21 @@ class LoginViewController: UIViewController {
         view.sendSubviewToBack(topBackgroundImageView)
         
         setupLayout() //Ekrandaki UI elemanlarını yerleştiren fonksiyonu çağırır.
+        
+        signUpButton.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
     }
+    
+    @objc private func goToRegister() {
+        let registerVC = RegistrationViewScreen()
+        registerVC.modalPresentationStyle = .fullScreen
+        present(registerVC, animated: true)
+    }
+
     
     private func setupLayout() {
         view.addSubview(containerView)
         
-        [emailTextField, passwordTextField, loginButton, forgotPasswordButton, signUpPromptLabel, signUpButton].forEach {
+        [usernameTextField, passwordTextField, loginButton, forgotPasswordButton, signUpPromptLabel, signUpButton].forEach {
             containerView.addSubview($0)
         }
         /*view.addSubview(logoImageView)
@@ -113,14 +122,14 @@ class LoginViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            emailTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
-            emailTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            emailTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            emailTextField.heightAnchor.constraint(equalToConstant: 44),
+            usernameTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
+            usernameTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            usernameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
-            passwordTextField.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
-            passwordTextField.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
+            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 16),
+            passwordTextField.leadingAnchor.constraint(equalTo: usernameTextField.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 44),
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
@@ -143,6 +152,10 @@ class LoginViewController: UIViewController {
                 topBackgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 topBackgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 topBackgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5) // ekranın yarısı kadar
+    
+        
+        
         ])
+        
     }
 }

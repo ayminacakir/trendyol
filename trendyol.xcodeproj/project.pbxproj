@@ -72,6 +72,11 @@
 			path = SplashScreen;
 			sourceTree = "<group>";
 		};
+		E7FA947B2E41D60A0041207A /* RegistrationScreen */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = RegistrationScreen;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +108,7 @@
 		E7A33AC02E3B2CC600A0602A = {
 			isa = PBXGroup;
 			children = (
+				E7FA947B2E41D60A0041207A /* RegistrationScreen */,
 				E7031E852E415A4C00D8F203 /* LoginPage */,
 				E7A33B1C2E3B30F900A0602A /* SplashScreen */,
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
@@ -149,6 +155,7 @@
 				E7031E852E415A4C00D8F203 /* LoginPage */,
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
 				E7A33B1C2E3B30F900A0602A /* SplashScreen */,
+				E7FA947B2E41D60A0041207A /* RegistrationScreen */,
 			);
 			name = trendyol;
 			packageProductDependencies = (
