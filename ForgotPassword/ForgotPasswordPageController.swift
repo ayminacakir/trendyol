@@ -33,7 +33,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(self, action: #selector(toggleCurrentPasswordVisibility(_:)), for: .touchUpInside)
+        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleCurrentPasswordVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)
@@ -58,7 +58,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(self, action: #selector(toggleNewPasswordVisibility(_:)), for: .touchUpInside)
+        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleNewPasswordVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)
@@ -82,7 +82,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(self, action: #selector(toggleNewPasswordAgainVisibility(_:)), for: .touchUpInside)
+        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleNewPasswordAgainVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)

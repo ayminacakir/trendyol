@@ -60,7 +60,7 @@ class SplashScreenViewController: UIViewController, UICollectionViewDataSource, 
         let selectedPage = sender.currentPage
         let indexPath = IndexPath(item: selectedPage, section: 0)
         splashCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        // BU NOKTADA pageControl.currentPage = ... YAPMA!
+        
     }
 
 

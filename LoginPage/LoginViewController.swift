@@ -1,5 +1,5 @@
 import UIKit
-
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
     private let logoImageView: UIImageView = {
@@ -17,9 +17,9 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    private let usernameTextField: UITextField = {
+    private let emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Kullanıcı Adı"
+        tf.placeholder = "E-mail"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
 
@@ -148,20 +148,35 @@ class LoginViewController: UIViewController {
         sender.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
-    @objc private func loginTapped() {
-        guard let username = usernameTextField.text, !username.isEmpty,
+   
+    
+    @objc private func loginTapped() { //giriş butonuna tıklandığında çalışır.
+        guard let username = emailTextField.text, !username.isEmpty,
               let password = passwordTextField.text, !password.isEmpty else {
             let alert = CustomAlertView(message: "Kullanıcı adı ve şifre boş bırakılamaz.")
             alert.show(in: self.view)
             return
         }
-        print("Giriş başarılı")
+       
+        //FireBase ile Giriş
+        Auth.auth().signIn(withEmail: username, password: password) { authResult , error in
+            
+            if let error = error {
+                
+                let alert = CustomAlertView(message:"Giriş başarısız: \(error.localizedDescription)")
+                alert.show(in: self.view)
+                return
+            }
+            let alert = CustomAlertView(message: "Giriş başarılı.Hoş geldiniz!")
+            alert.show(in: self.view)
+            
+        }
     }
     
     private func setupLayout() {
         view.addSubview(containerView)
         
-        [usernameTextField, passwordTextField, loginButton, forgotPasswordButton, signUpPromptLabel, signUpButton].forEach {
+        [emailTextField, passwordTextField, loginButton, forgotPasswordButton, signUpPromptLabel, signUpButton].forEach {
             containerView.addSubview($0)
         }
         /*view.addSubview(logoImageView)
@@ -181,14 +196,14 @@ class LoginViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            usernameTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
-            usernameTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            usernameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 44),
+            emailTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
+            emailTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            emailTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            emailTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 16),
-            passwordTextField.leadingAnchor.constraint(equalTo: usernameTextField.leadingAnchor),
-            passwordTextField.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
+            passwordTextField.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 44),
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),

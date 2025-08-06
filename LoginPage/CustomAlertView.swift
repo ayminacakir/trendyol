@@ -54,7 +54,7 @@ class CustomAlertView: UIView {
     }
 
     @objc private func dismissAlert() {
-        self.removeFromSuperview()
+        self.removeFromSuperview()  //"Tamam" butonuna basıldığında alert kapatılır (ekrandan kaldırılır).
     }
 
     func show(in view: UIView) {

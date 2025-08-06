@@ -1,4 +1,6 @@
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class RegistrationViewScreen: UIViewController {
     
@@ -20,9 +22,9 @@ class RegistrationViewScreen: UIViewController {
         return label
     }()
     
-    private let usernameTextField: UITextField = {
+    private let emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Kullanıcı Adı"
+        tf.placeholder = "E-mail"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
@@ -102,7 +104,7 @@ class RegistrationViewScreen: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
             nameTextField,
-            usernameTextField,
+            emailTextField,
             passwordTextField,
             registerButton,
             bottomStack
@@ -132,13 +134,47 @@ class RegistrationViewScreen: UIViewController {
     
     @objc private func registerTapped() {
         guard let name = nameTextField.text, !name.isEmpty,
-              let username = usernameTextField.text, !username.isEmpty,
+              let email = emailTextField.text, !email.isEmpty,
               let password = passwordTextField.text, !password.isEmpty else {
-            let alert = CustomAlertView(message: "Ad Soyad, kullanıcı adı ve şifre boş bırakılamaz.")
+            let alert = CustomAlertView(message: "Ad Soyad, e-mail ve şifre boş bırakılamaz.")
             alert.show(in: self.view)
             return
         }
-        print("Giriş başarılı")
+
+        // Firebase Authentication ile kullanıcıyı oluştur
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                let alert = CustomAlertView(message: "Kayıt başarısız: \(error.localizedDescription)")
+                alert.show(in: self.view)
+                return
+            }
+
+            guard let uid = result?.user.uid else { return }
+
+            // Firestore'a kullanıcı bilgilerini kaydet
+            let db = Firestore.firestore()
+            let userData: [String: Any] = [
+                "uid": uid,
+                "name": name,
+                "email": email,
+                "createdAt": Timestamp()
+            ]
+
+            db.collection("users").document(uid).setData(userData) { error in
+                if let error = error {
+                    let alert = CustomAlertView(message: "Veri kaydı başarısız: \(error.localizedDescription)")
+                    alert.show(in: self.view)
+                } else {
+                    print("Kullanıcı başarıyla kaydedildi")
+                    let alert = CustomAlertView(message: "Kayıt başarılı!")
+                    alert.show(in: self.view)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        self.goToLogin()
+                    }
+                }
+            }
+        }
     }
     
     
@@ -147,8 +183,5 @@ class RegistrationViewScreen: UIViewController {
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true)
     }
-    
-  
-        
     
 }
