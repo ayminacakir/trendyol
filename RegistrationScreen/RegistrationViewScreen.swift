@@ -81,7 +81,7 @@ class RegistrationViewScreen: UIViewController {
         
         registerButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
         alreadyHaveAccountButton.addTarget(self, action: #selector(goToLogin), for: .touchUpInside)
-        
+        registerButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
 
     }
     
@@ -131,13 +131,24 @@ class RegistrationViewScreen: UIViewController {
 
     
     @objc private func registerTapped() {
-        print("Kayıt olundu")
+        guard let name = nameTextField.text, !name.isEmpty,
+              let username = usernameTextField.text, !username.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            let alert = CustomAlertView(message: "Ad Soyad, kullanıcı adı ve şifre boş bırakılamaz.")
+            alert.show(in: self.view)
+            return
+        }
+        print("Giriş başarılı")
     }
+    
     
     @objc private func goToLogin() {
         let loginVC = LoginViewController()
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true)
     }
+    
+  
+        
     
 }

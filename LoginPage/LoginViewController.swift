@@ -1,5 +1,6 @@
 import UIKit
 
+
 class LoginViewController: UIViewController {
     private let logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
@@ -21,17 +22,49 @@ class LoginViewController: UIViewController {
         tf.placeholder = "Kullanıcı Adı"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let icon = UIImageView(image: UIImage(systemName: "person"))
+        icon.tintColor = .gray
+        icon.contentMode = .center
+        icon.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        container.addSubview(icon)
+        icon.center = container.center // Ortalamak için
+
+        tf.rightView = container
+        tf.rightViewMode = .always
+
         return tf
     }()
+
     
-    private let passwordTextField: UITextField = {
+    private lazy var passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Şifre"
         tf.isSecureTextEntry = true
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.tintColor = .gray
+        button.contentMode = .center
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
+
+        button.addTarget(self, action: #selector(togglePasswordVisibility(_:)), for: .touchUpInside)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        container.addSubview(button)
+        button.center = container.center
+
+        tf.rightView = container
+        tf.rightViewMode = .always
+
         return tf
     }()
+
+
     
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
@@ -78,7 +111,8 @@ class LoginViewController: UIViewController {
         return imageView
     }()
 
-    
+   
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +125,8 @@ class LoginViewController: UIViewController {
         
         signUpButton.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
         forgotPasswordButton.addTarget(self, action: #selector(goToForgotPasswordPage), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+
     }
     
     @objc private func goToRegister() {
@@ -103,6 +139,23 @@ class LoginViewController: UIViewController {
         let passwordVC = ForgotPasswordViewController()
         passwordVC.modalPresentationStyle = .fullScreen
         present(passwordVC, animated: true)
+    }
+    
+    @objc private func togglePasswordVisibility(_ sender: UIButton) {
+        passwordTextField.isSecureTextEntry.toggle()
+        
+        let imageName = passwordTextField.isSecureTextEntry ? "eye.slash" : "eye"
+        sender.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+    
+    @objc private func loginTapped() {
+        guard let username = usernameTextField.text, !username.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            let alert = CustomAlertView(message: "Kullanıcı adı ve şifre boş bırakılamaz.")
+            alert.show(in: self.view)
+            return
+        }
+        print("Giriş başarılı")
     }
     
     private func setupLayout() {

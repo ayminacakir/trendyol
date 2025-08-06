@@ -21,29 +21,75 @@ class ForgotPasswordViewController: UIViewController {
     
     
     private let currentPasswordTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Mevcut Şifreniz"
-        textField.isSecureTextEntry = true
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+        let tf = UITextField()
+        tf.placeholder = "Mevcut Şifreniz"
+        tf.isSecureTextEntry = true
+        tf.borderStyle = .roundedRect
+        tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.tintColor = .gray
+        button.contentMode = .center
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
+
+        button.addTarget(self, action: #selector(toggleCurrentPasswordVisibility(_:)), for: .touchUpInside)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        container.addSubview(button)
+        button.center = container.center
+
+        tf.rightView = container
+        tf.rightViewMode = .always
+            return tf
+        }()
+
     
     private let newPasswordField: UITextField = {
-            let tf = UITextField()
-            tf.placeholder = "Yeni Şifre"
-            tf.isSecureTextEntry = true
-            tf.borderStyle = .roundedRect
-            tf.translatesAutoresizingMaskIntoConstraints = false
+        let tf = UITextField()
+        tf.placeholder = "Yeni Şifre"
+        tf.isSecureTextEntry = true
+        tf.borderStyle = .roundedRect
+        tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.tintColor = .gray
+        button.contentMode = .center
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
+
+        button.addTarget(self, action: #selector(toggleNewPasswordVisibility(_:)), for: .touchUpInside)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        container.addSubview(button)
+        button.center = container.center
+
+        tf.rightView = container
+        tf.rightViewMode = .always
             return tf
         }()
     
     private let newPasswordAgainField: UITextField = {
-            let tf = UITextField()
-            tf.placeholder = "Yeni Şifre Tekrar"
-            tf.isSecureTextEntry = true
-            tf.borderStyle = .roundedRect
-            tf.translatesAutoresizingMaskIntoConstraints = false
+        let tf = UITextField()
+        tf.placeholder = "Yeni Şifre Tekrar"
+        tf.isSecureTextEntry = true
+        tf.borderStyle = .roundedRect
+        tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.tintColor = .gray
+        button.contentMode = .center
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
+
+        button.addTarget(self, action: #selector(toggleNewPasswordAgainVisibility(_:)), for: .touchUpInside)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        container.addSubview(button)
+        button.center = container.center
+
+        tf.rightView = container
+        tf.rightViewMode = .always
             return tf
         }()
     
@@ -104,11 +150,29 @@ class ForgotPasswordViewController: UIViewController {
         
         let loginVC = LoginViewController()
                 loginVC.modalPresentationStyle = .fullScreen
-                present(loginVC, animated: true)
+        loginVC.modalTransitionStyle = .crossDissolve
+        present(loginVC, animated: true)
 
     }
     
-    
+    @objc private func toggleCurrentPasswordVisibility(_ sender: UIButton) {
+        currentPasswordTextField.isSecureTextEntry.toggle()
+        let imageName = currentPasswordTextField.isSecureTextEntry ? "eye.slash" : "eye"
+        sender.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+
+    @objc private func toggleNewPasswordVisibility(_ sender: UIButton) {
+        newPasswordField.isSecureTextEntry.toggle()
+        let imageName = newPasswordField.isSecureTextEntry ? "eye.slash" : "eye"
+        sender.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+
+    @objc private func toggleNewPasswordAgainVisibility(_ sender: UIButton) {
+        newPasswordAgainField.isSecureTextEntry.toggle()
+        let imageName = newPasswordAgainField.isSecureTextEntry ? "eye.slash" : "eye"
+        sender.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+
     
     
 }
