@@ -27,6 +27,7 @@ class RegistrationViewScreen: UIViewController {
         tf.placeholder = "E-mail"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -35,6 +36,7 @@ class RegistrationViewScreen: UIViewController {
             tf.placeholder = "Ad Soyad"
             tf.borderStyle = .roundedRect
             tf.translatesAutoresizingMaskIntoConstraints = false
+            tf.autocapitalizationType = .none
             return tf
         }()
     

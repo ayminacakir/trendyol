@@ -15,6 +15,7 @@
 		E7FA95F42E4346EB0041207A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E7FA95F32E4346EB0041207A /* FirebaseAuth */; };
 		E7FA95F62E4346EB0041207A /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E7FA95F52E4346EB0041207A /* FirebaseCore */; };
 		E7FA95F82E4366F60041207A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E7FA95F72E4366F60041207A /* FirebaseFirestore */; };
+		E7FA96002E44EBD90041207A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7FA95FF2E44EBD90041207A /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		E7FA95E62E42A4180041207A /* AppData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppData.xcdatamodel; sourceTree = "<group>"; };
 		E7FA95E82E430F2D0041207A /* AppLaunchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchManager.swift; sourceTree = "<group>"; };
 		E7FA95EE2E43445B0041207A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E7FA95FF2E44EBD90041207A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -127,6 +129,7 @@
 		E7A33AC02E3B2CC600A0602A = {
 			isa = PBXGroup;
 			children = (
+				E7FA95FF2E44EBD90041207A /* LaunchScreen.storyboard */,
 				E7FA95EE2E43445B0041207A /* GoogleService-Info.plist */,
 				E7FA95E82E430F2D0041207A /* AppLaunchManager.swift */,
 				E7FA95E52E42A4180041207A /* AppData.xcdatamodeld */,
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7FA95EF2E43445B0041207A /* GoogleService-Info.plist in Resources */,
+				E7FA96002E44EBD90041207A /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

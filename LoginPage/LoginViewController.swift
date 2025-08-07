@@ -22,7 +22,8 @@ class LoginViewController: UIViewController {
         tf.placeholder = "E-mail"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
-
+        tf.autocapitalizationType = .none
+        
         let icon = UIImageView(image: UIImage(systemName: "person"))
         icon.tintColor = .gray
         icon.contentMode = .center
