@@ -59,7 +59,7 @@ class LoginViewController: UIViewController {
         button.center = container.center
 
         tf.rightView = container
-        tf.rightViewMode = .always
+        tf.rightViewMode = .always // göz butonu her zman görünür olacak
 
         return tf
     }()
@@ -153,7 +153,7 @@ class LoginViewController: UIViewController {
     @objc private func loginTapped() { //giriş butonuna tıklandığında çalışır.
         guard let username = emailTextField.text, !username.isEmpty,
               let password = passwordTextField.text, !password.isEmpty else {
-            let alert = CustomAlertView(message: "Kullanıcı adı ve şifre boş bırakılamaz.")
+            let alert = CustomAlertView(title: "Uyarı!", message: "Kullanıcı adı ve şifre boş bırakılamaz.")
             alert.show(in: self.view)
             return
         }
@@ -163,11 +163,11 @@ class LoginViewController: UIViewController {
             
             if let error = error {
                 
-                let alert = CustomAlertView(message:"Giriş başarısız: \(error.localizedDescription)")
+                let alert = CustomAlertView(title: "Uyarı!", message:"Giriş başarısız: \(error.localizedDescription)")
                 alert.show(in: self.view)
                 return
             }
-            let alert = CustomAlertView(message: "Giriş başarılı.Hoş geldiniz!")
+            let alert = CustomAlertView(title: "Uyarı!", message: "Giriş başarılı.Hoş geldiniz!")
             alert.show(in: self.view)
             
         }
@@ -176,9 +176,15 @@ class LoginViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(containerView)
         
-        [emailTextField, passwordTextField, loginButton, forgotPasswordButton, signUpPromptLabel, signUpButton].forEach {
+        [emailTextField,
+         passwordTextField,
+         loginButton,
+         forgotPasswordButton,
+         signUpPromptLabel,
+         signUpButton].forEach {
             containerView.addSubview($0)
         }
+        
         /*view.addSubview(logoImageView)
          view.addSubview(emailTextField)
          view.addSubview(passwordTextField)

@@ -2,19 +2,20 @@ import UIKit
 
 class CustomAlertView: UIView {
     
+    private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let okButton = UIButton(type: .system)
-    
-    init(message: String) {
+        
+    init(title: String, message: String) {
         super.init(frame: UIScreen.main.bounds)
-        setupUI(message: message)
+        setupUI(title: title, message: message)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupUI(message: String) {
+    private func setupUI(title: String, message: String) {
         self.backgroundColor = UIColor.black.withAlphaComponent(0.4)
 
         let alertBox = UIView()
@@ -23,6 +24,11 @@ class CustomAlertView: UIView {
         alertBox.translatesAutoresizingMaskIntoConstraints = false
         addSubview(alertBox)
 
+        titleLabel.text = title
+        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         messageLabel.text = message
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
@@ -37,13 +43,18 @@ class CustomAlertView: UIView {
         
         alertBox.addSubview(messageLabel)
         alertBox.addSubview(okButton)
+        alertBox.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
             alertBox.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             alertBox.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             alertBox.widthAnchor.constraint(equalToConstant: 280),
             
-            messageLabel.topAnchor.constraint(equalTo: alertBox.topAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: alertBox.topAnchor ,constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: alertBox.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: alertBox.trailingAnchor, constant: -16),
+            
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 25),
             messageLabel.leadingAnchor.constraint(equalTo: alertBox.leadingAnchor, constant: 16),
             messageLabel.trailingAnchor.constraint(equalTo: alertBox.trailingAnchor, constant: -16),
             

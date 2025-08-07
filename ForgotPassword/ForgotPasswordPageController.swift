@@ -1,4 +1,6 @@
 import UIKit
+import FirebaseAuth
+import Firebase
 
 class ForgotPasswordViewController: UIViewController {
     
@@ -20,7 +22,7 @@ class ForgotPasswordViewController: UIViewController {
     }()
     
     
-    private let currentPasswordTextField: UITextField = {
+    private lazy var currentPasswordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Mevcut Şifreniz"
         tf.isSecureTextEntry = true
@@ -33,7 +35,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleCurrentPasswordVisibility(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleCurrentPasswordVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)
@@ -41,11 +43,12 @@ class ForgotPasswordViewController: UIViewController {
 
         tf.rightView = container
         tf.rightViewMode = .always
-            return tf
-        }()
+        return tf
+    }()
+
 
     
-    private let newPasswordField: UITextField = {
+    private lazy var newPasswordField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Yeni Şifre"
         tf.isSecureTextEntry = true
@@ -58,7 +61,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleNewPasswordVisibility(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleNewPasswordVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)
@@ -69,7 +72,7 @@ class ForgotPasswordViewController: UIViewController {
             return tf
         }()
     
-    private let newPasswordAgainField: UITextField = {
+    private lazy var newPasswordAgainField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Yeni Şifre Tekrar"
         tf.isSecureTextEntry = true
@@ -82,7 +85,7 @@ class ForgotPasswordViewController: UIViewController {
         button.contentMode = .center
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 24)
 
-        button.addTarget(ForgotPasswordViewController.self, action: #selector(toggleNewPasswordAgainVisibility(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleNewPasswordAgainVisibility(_:)), for: .touchUpInside)
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         container.addSubview(button)
@@ -146,13 +149,23 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     @objc private func saveTapped() {
-        print("Şifre güncellendi")
-        
-        let loginVC = LoginViewController()
-                loginVC.modalPresentationStyle = .fullScreen
-        loginVC.modalTransitionStyle = .crossDissolve
-        present(loginVC, animated: true)
+        guard let newPassword = newPasswordField.text,
+                 let newPasswordAgain = newPasswordAgainField.text,
+                 !newPassword.isEmpty,
+                 newPassword == newPasswordAgain else {
+               print("Şifreler boş ya da eşleşmiyor.")
+               return
+           }
 
+           updatePassword(newPassword: newPassword)
+           
+           // Şifre değiştikten sonra login ekranına geçmek için biraz gecikme ekle
+           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+               let loginVC = LoginViewController()
+               loginVC.modalPresentationStyle = .fullScreen
+               loginVC.modalTransitionStyle = .crossDissolve
+               self.present(loginVC, animated: true)
+           }
     }
     
     @objc private func toggleCurrentPasswordVisibility(_ sender: UIButton) {
@@ -173,6 +186,28 @@ class ForgotPasswordViewController: UIViewController {
         sender.setImage(UIImage(systemName: imageName), for: .normal)
     }
 
-    
+    func updatePassword(newPassword: String) {
+        guard let user = Auth.auth().currentUser else {
+            print("Kullanıcı giriş yapmamış.")
+            return
+        }
+
+        user.updatePassword(to: newPassword) { error in
+            if let error = error {
+                print("Şifre güncellenemedi: \(error.localizedDescription)")
+            } else {
+                print("Şifre başarıyla güncellendi.")
+            }
+        }
+    }
+   
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
+
+
     
 }

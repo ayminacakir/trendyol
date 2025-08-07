@@ -4,7 +4,7 @@ import CoreData
 class AppLaunchManager {
     
     static func isFirstLaunch() -> Bool {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext //oreData’da veri okuma/yazma yapacağım alanı al
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext //CoreData’da veri okuma/yazma yapacağım alanı al
 
         if let entities = context.persistentStoreCoordinator?.managedObjectModel.entities {
             for entity in entities {
