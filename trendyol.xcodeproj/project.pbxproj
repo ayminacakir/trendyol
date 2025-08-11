@@ -84,6 +84,11 @@
 			path = SplashScreen;
 			sourceTree = "<group>";
 		};
+		E7D648792E49CD7100B0B1B3 /* HomePage */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HomePage;
+			sourceTree = "<group>";
+		};
 		E7FA947B2E41D60A0041207A /* RegistrationScreen */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RegistrationScreen;
@@ -129,6 +134,7 @@
 		E7A33AC02E3B2CC600A0602A = {
 			isa = PBXGroup;
 			children = (
+				E7D648792E49CD7100B0B1B3 /* HomePage */,
 				E7FA95FF2E44EBD90041207A /* LaunchScreen.storyboard */,
 				E7FA95EE2E43445B0041207A /* GoogleService-Info.plist */,
 				E7FA95E82E430F2D0041207A /* AppLaunchManager.swift */,
@@ -181,6 +187,7 @@
 				E7031E852E415A4C00D8F203 /* LoginPage */,
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
 				E7A33B1C2E3B30F900A0602A /* SplashScreen */,
+				E7D648792E49CD7100B0B1B3 /* HomePage */,
 				E7FA947B2E41D60A0041207A /* RegistrationScreen */,
 				E7FA95942E421BF40041207A /* ForgotPassword */,
 			);
