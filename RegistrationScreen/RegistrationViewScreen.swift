@@ -80,8 +80,6 @@ class RegistrationViewScreen: UIViewController {
     }()
 
 
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad() //  //  UIKit sistemi çalıştır
         view.backgroundColor = .orange //  Arka planı hazırla

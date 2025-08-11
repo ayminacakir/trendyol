@@ -161,10 +161,7 @@ class ForgotPasswordViewController: UIViewController {
            
            // Şifre değiştikten sonra login ekranına geçmek için biraz gecikme ekle
            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-               let loginVC = LoginViewController()
-               loginVC.modalPresentationStyle = .fullScreen
-               loginVC.modalTransitionStyle = .crossDissolve
-               self.present(loginVC, animated: true)
+               self.dismiss(animated: true)
            }
     }
     
@@ -193,7 +190,7 @@ class ForgotPasswordViewController: UIViewController {
         }
 
         user.updatePassword(to: newPassword) { error in
-            if let error = error {
+            if let error {
                 print("Şifre güncellenemedi: \(error.localizedDescription)")
             } else {
                 print("Şifre başarıyla güncellendi.")

@@ -96,6 +96,11 @@ class SplashScreenViewController: UIViewController, UICollectionViewDataSource, 
             self?.goToNextPage()
         }
         
+        if #available(iOS 14.0, *) {
+            pageControl.allowsContinuousInteraction = false
+            pageControl.backgroundStyle = .minimal // or .prominent
+        }
+        
         NSLayoutConstraint.activate([
             splashCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             splashCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -207,5 +212,6 @@ class SplashScreenViewController: UIViewController, UICollectionViewDataSource, 
         splashCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         updateActionButtonIcon(for: selectedPage)
     }
-    
+   
+     
 }
