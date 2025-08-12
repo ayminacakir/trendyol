@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         // İlk açılış kontrolü
-        if !AppLaunchManager.isFirstLaunch() {
+        if AppLaunchManager.isFirstLaunch() {
             window.rootViewController = SplashScreenViewController() // Sadece ilk açılışta gösterilecek
         } else {
             window.rootViewController = LoginViewController() // Diğer tüm açılışlarda doğrudan login

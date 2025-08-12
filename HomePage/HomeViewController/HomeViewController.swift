@@ -18,7 +18,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width / 2 - 16, height: 250)
+        layout.itemSize = CGSize(width: view.frame.width / 2 - 16, height: 270)
         //ekran genişliğini ikiye bölüp biraz boşluk bırakıyoruz.hücre yüksekliği 250 px
         layout.minimumLineSpacing = 8 //Alt alta olan hücreler arasında 8 px boşluk bırakır.
         layout.minimumInteritemSpacing = 8
@@ -62,6 +62,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("index: \(indexPath.row)")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
         cell.configure(with: products[indexPath.item])
         return cell
