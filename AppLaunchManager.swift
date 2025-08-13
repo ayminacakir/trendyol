@@ -15,7 +15,7 @@ class AppLaunchManager {
         let fetchRequest: NSFetchRequest<LaunchState> = LaunchState.fetchRequest()
         
         do {
-            let results = try context.fetch(fetchRequest) //CoreData’dan veri çekiyoru
+            let results = try context.fetch(fetchRequest) //CoreData’dan veri çekiyoruz
             if results.isEmpty { //Liste boş mu?
                 // İlk defa açılıyor
                 let state = LaunchState(context: context)
@@ -29,5 +29,9 @@ class AppLaunchManager {
             print("Veri okunamadı: \(error)")
             return false
         }
+        
+        
+        
+        
     }
 }

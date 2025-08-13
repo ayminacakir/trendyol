@@ -69,4 +69,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedProduct = products[indexPath.item]
+        let detailVC = ProductDetailViewController()
+        detailVC.productID = selectedProduct.id
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+
 }
