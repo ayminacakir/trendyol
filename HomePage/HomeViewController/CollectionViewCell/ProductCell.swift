@@ -7,6 +7,9 @@ class ProductCell: UICollectionViewCell {
     let productImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
+        iv.backgroundColor = UIColor.systemGray6
+        iv.layer.cornerRadius = 8
+        iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -39,6 +42,15 @@ class ProductCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 12
+        contentView.layer.shadowColor = UIColor.black.cgColor
+        contentView.layer.shadowOpacity = 0.1
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowRadius = 6
+        contentView.layer.masksToBounds = false
+        
         contentView.addSubview(productImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
@@ -46,23 +58,19 @@ class ProductCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            productImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor ),
-            productImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor ),
-            productImageView.heightAnchor.constraint(equalToConstant: 170),
-           
+            productImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            productImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            productImageView.heightAnchor.constraint(equalToConstant: 150),
             
             titleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
+            priceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
-            rateLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 2),
+            rateLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 4),
             rateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
-            
-            
         ])
            
     }
@@ -70,13 +78,22 @@ class ProductCell: UICollectionViewCell {
         fatalError()
     }
     
+    override var isHighlighted: Bool {
+            didSet {
+                UIView.animate(withDuration: 0.2) {
+                    self.contentView.transform = self.isHighlighted ?
+                        CGAffineTransform(scaleX: 0.97, y: 0.97) : .identity
+                }
+            }
+        }
+    
     
     /*Bir Product modelinden aldığı verileri hücrede göstermek.
      Yani burası hücreyi dolduran yer.*/
     func configure(with product: Product) {
         titleLabel.text = product.title
         priceLabel.text = "$\(product.price)"
-        rateLabel.text = "\(product.rating)"
+        rateLabel.text = "⭐️\(product.rate)"
         
         if let url = URL(string: product.image){
             DispatchQueue.global().async {

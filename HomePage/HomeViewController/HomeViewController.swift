@@ -7,7 +7,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .tertiarySystemBackground
         title = "Home"
         
         setupCollectionView()
