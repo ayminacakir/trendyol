@@ -48,7 +48,7 @@ class ProductCell: UICollectionViewCell {
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOpacity = 0.1
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        contentView.layer.shadowRadius = 6
+        contentView.layer.shadowRadius = 8
         contentView.layer.masksToBounds = false
         
         contentView.addSubview(productImageView)

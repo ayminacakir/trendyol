@@ -38,8 +38,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         updateProfileTabIcon(selected: false)
     }
-
-    
     // Tab değiştiğinde tetiklenir
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let isProfileSelected = (selectedIndex == 1)
