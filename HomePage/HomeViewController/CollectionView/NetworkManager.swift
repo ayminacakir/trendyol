@@ -33,5 +33,36 @@ class NetworkManager {
     }
     
     
+    func fetchProductDetail(id: Int, completion: @escaping (Product?) -> Void) {
+        guard let url = URL(string: "https://fakestoreapi.com/products/\(id)") else {
+            completion(nil)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Error:", error.localizedDescription)
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                completion(nil)
+                return
+            }
+            
+            do {
+                let product = try JSONDecoder().decode(Product.self, from: data)
+                completion(product)
+            } catch {
+                print("Decoding Error:", error.localizedDescription)
+                completion(nil)
+            }
+        }.resume()
+    }
+
+    
+    
+    
 }
     

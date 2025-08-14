@@ -2,15 +2,33 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let homeVC = HomeViewController()
-        let profileVC = ProfileViewController()
+        delegate = self
         
-        homeVC.tabBarItem = UITabBarItem(title: "Ana Ekran", image: UIImage(systemName: "house"), tag: 0)
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .tertiarySystemBackground
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        appearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.systemGray]
+        appearance.stackedLayoutAppearance.normal.iconColor = .systemOrange
+        
+        tabBar.standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            tabBar.scrollEdgeAppearance = appearance
+        }/*iOS 15 ile gelen scrollEdgeAppearance da ayarlanır.
+          
+          Böylece sayfa yukarı kayarken bile tasarım tutarlı olur.*/
+        
+        let homeIcon = UIImage(systemName: "house")
+        let homeVC = HomeViewController()
+        homeVC.tabBarItem = UITabBarItem(title: "Ana Ekran", image: homeIcon, selectedImage: homeIcon)
+        
+        let profileVC = ProfileViewController()
         profileVC.tabBarItem = UITabBarItem(title: "Profil", image: UIImage(systemName: "person.circle"), tag: 1)
         
         let homeNav = UINavigationController(rootViewController: homeVC)
@@ -18,11 +36,15 @@ class MainTabBarController: UITabBarController {
         
         viewControllers = [homeNav, profileNav]
         
-        // Kullanıcı baş harf ikonu oluştur
-        updateProfileTabIcon()
+        updateProfileTabIcon(selected: false)
+    }
+    // Tab değiştiğinde tetiklenir
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let isProfileSelected = (selectedIndex == 1)
+        updateProfileTabIcon(selected: isProfileSelected)
     }
     
-    private func updateProfileTabIcon() {
+    private func updateProfileTabIcon(selected: Bool) {
         guard let user = Auth.auth().currentUser else { return }
         let db = Firestore.firestore()
         
@@ -32,10 +54,10 @@ class MainTabBarController: UITabBarController {
             if let data = snapshot?.data(),
                let name = data["name"] as? String {
                 let initials = self.getInitials(from: name)
-                initialsImage = self.initialsToImage(initials: initials)
+                initialsImage = self.initialsToImage(initials: initials, selected: selected)
             } else {
                 let initials = self.getInitials(from: user.displayName ?? "Kullanıcı")
-                initialsImage = self.initialsToImage(initials: initials)
+                initialsImage = self.initialsToImage(initials: initials, selected: selected)
             }
             
             DispatchQueue.main.async {
@@ -43,6 +65,7 @@ class MainTabBarController: UITabBarController {
                    navControllers.count > 1,
                    let profileNav = navControllers[1] as? UINavigationController {
                     profileNav.tabBarItem.image = initialsImage?.withRenderingMode(.alwaysOriginal)
+                    profileNav.tabBarItem.selectedImage = initialsImage?.withRenderingMode(.alwaysOriginal)
                 }
             }
         }
@@ -54,12 +77,13 @@ class MainTabBarController: UITabBarController {
         return initials.joined()
     }
     
-    private func initialsToImage(initials: String) -> UIImage? {
+    // Arka plan rengi profil seçili olup olmamasına göre değişiyor
+    private func initialsToImage(initials: String, selected: Bool) -> UIImage? {
         let label = UILabel()
-        label.frame.size = CGSize(width: 30, height: 30) // Tab bar için küçük boyut
+        label.frame.size = CGSize(width: 30, height: 30)
         label.text = initials
         label.textAlignment = .center
-        label.backgroundColor = .systemGray3
+        label.backgroundColor = selected ? .systemBlue : .systemOrange
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .white
         label.layer.cornerRadius = 15
