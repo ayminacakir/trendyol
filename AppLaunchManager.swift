@@ -34,4 +34,27 @@ class AppLaunchManager {
         
         
     }
+
+// LoginState entity, lastLogin: Date()
+
+    static func isLastLoginWithinOneHour() -> Bool {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<LoginState> = LoginState.fetchRequest()
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let state = results.first, let lastLogin = state.lastLogin {
+                let now = Date()
+                let interval = now.timeIntervalSince(lastLogin) // interval in seconds
+                return interval <= 3600 // 3600 seconds = 1 hour
+            } else {
+                // No previous login; treat as not within one hour
+                return false
+            }
+        } catch {
+            print("Failed to fetch LoginState: \(error)")
+            return false
+        }
+    }
+
 }

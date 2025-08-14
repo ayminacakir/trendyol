@@ -12,8 +12,14 @@ import FirebaseCore
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        setLastLogin()
+    }
 
-
+    func applicationWillTerminate(_ application: UIApplication) {
+        setLastLogin()
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
@@ -76,6 +82,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        }
+    }
+
+    private func setLastLogin() {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<LoginState> = LoginState.fetchRequest()
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let state = results.first {
+                state.lastLogin = Date()
+            } else {
+                let state = LoginState(context: context)
+                state.lastLogin = Date()
+            }
+            try context.save()
+        } catch {
+            print("Failed to set last login: \(error)")
         }
     }
 

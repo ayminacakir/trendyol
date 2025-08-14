@@ -9,9 +9,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         view.backgroundColor = .tertiarySystemBackground
         title = "Home"
-        
-        setupCollectionView()
+
         fetchData()
+        setupCollectionView()
     }
     
     func setupCollectionView() {

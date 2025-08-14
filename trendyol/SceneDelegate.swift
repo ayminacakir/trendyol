@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if AppLaunchManager.isFirstLaunch() {
             window.rootViewController = SplashScreenViewController() // Sadece ilk açılışta gösterilecek
         } else {
-            window.rootViewController = LoginViewController() // Diğer tüm açılışlarda doğrudan login
+            if AppLaunchManager.isLastLoginWithinOneHour() {
+                window.rootViewController = LoginViewController() // Diğer tüm açılışlarda doğrudan login
+            } else {
+                window.rootViewController = LoginViewController() // Diğer tüm açılışlarda doğrudan login
+            }
         }
 
         self.window = window
@@ -41,6 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
+        setLastLogin()
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
@@ -51,6 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        setLastLogin()
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
@@ -59,6 +66,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 
+    private func setLastLogin() {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<LoginState> = LoginState.fetchRequest()
 
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let state = results.first {
+                state.lastLogin = Date()
+            } else {
+                let state = LoginState(context: context)
+                state.lastLogin = Date()
+            }
+            try context.save()
+        } catch {
+            print("Failed to set last login: \(error)")
+        }
+    }
 }
 
