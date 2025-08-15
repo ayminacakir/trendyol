@@ -2,7 +2,7 @@ import UIKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var products: [Product] = []
+    var products: [ProductSummary] = []
     var collectionView: UICollectionView!
     
     override func viewDidLoad() {

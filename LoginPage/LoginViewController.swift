@@ -3,7 +3,7 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-    
+   
     private let logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -13,7 +13,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1) // açık gri ton
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)// açık gri ton
         view.layer.cornerRadius = 16
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -22,10 +22,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "E-mail"
+        tf.textColor = .black
+        tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.autocapitalizationType = .none
         tf.returnKeyType = .next
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "E-mail",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
         
         let icon = UIImageView(image: UIImage(systemName: "person"))
         icon.tintColor = .gray
@@ -46,10 +52,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private lazy var passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Şifre"
+        tf.textColor = .black
+        tf.backgroundColor = .white
         tf.isSecureTextEntry = true
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.returnKeyType = .done
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "Şifre",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
         
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "eye.slash"), for: .normal)

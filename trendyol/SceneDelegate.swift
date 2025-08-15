@@ -25,7 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         self.window = window
         window.makeKeyAndVisible()
+        applyThemeAtLaunch()
     }
+
+    func applyThemeAtLaunch() {
+            let isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
+            if let window = self.window {
+                window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+            }
+        }
 
     
     func sceneDidDisconnect(_ scene: UIScene) {

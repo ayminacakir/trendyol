@@ -30,8 +30,8 @@
             filePath = "LoginPage/LoginViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "loginTapped()"
             landmarkType = "7">
          </BreakpointContent>

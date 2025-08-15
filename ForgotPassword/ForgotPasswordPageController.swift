@@ -15,6 +15,7 @@ class ForgotPasswordViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Şifreyi Güncelle"
+        label.textColor = .darkGray
         label.font = .boldSystemFont(ofSize: 24)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +28,13 @@ class ForgotPasswordViewController: UIViewController {
         tf.placeholder = "Mevcut Şifreniz"
         tf.isSecureTextEntry = true
         tf.borderStyle = .roundedRect
+        tf.backgroundColor = .white
         tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "Mevcut Şifreniz",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
 
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
@@ -51,9 +58,15 @@ class ForgotPasswordViewController: UIViewController {
     private lazy var newPasswordField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Yeni Şifre"
+        tf.backgroundColor = .white
         tf.isSecureTextEntry = true
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "Mevcut Şifreniz",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
 
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
@@ -76,8 +89,14 @@ class ForgotPasswordViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Yeni Şifre Tekrar"
         tf.isSecureTextEntry = true
+        tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
+        
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "Mevcut Şifreniz",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
 
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "eye.slash"), for: .normal)

@@ -5,6 +5,16 @@ import FirebaseFirestore
 
 class ProfileViewController: UIViewController {
     
+    private let settingsButton: UIButton = {
+           let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular)
+           button.setImage(UIImage(systemName: "gearshape.fill", withConfiguration: config), for: .normal)
+           button.tintColor = .systemBlue 
+           button.translatesAutoresizingMaskIntoConstraints = false
+           return button
+       }()
+    
+    
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill // Resmi en-boy oranını koruyarak görünümü dolduracak şekilde büyütür.
@@ -39,6 +49,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(profileImageView)
         view.addSubview(nameLabel)
         view.addSubview(logoutButton)
+        view.addSubview(settingsButton)
         
         setupLayout()
         loadUserInfo()
@@ -50,6 +61,9 @@ class ProfileViewController: UIViewController {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
         
         NSLayoutConstraint.activate([
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
@@ -63,9 +77,17 @@ class ProfileViewController: UIViewController {
             logoutButton.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 40),
             logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoutButton.widthAnchor.constraint(equalToConstant: 120),
-            logoutButton.heightAnchor.constraint(equalToConstant: 44)
+            logoutButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
+        
+       
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
     }
+
+    
     
     private func loadUserInfo() {
         guard let user = Auth.auth().currentUser else { return }
@@ -136,5 +158,14 @@ class ProfileViewController: UIViewController {
                 print("Çıkış hatası: \(error.localizedDescription)")
             }
         }
+    
+    
+    @objc private func settingsButtonTapped() {
+        let settingsVC = SettingsViewController()
+        settingsVC.modalPresentationStyle = .overFullScreen
+        settingsVC.modalTransitionStyle = .crossDissolve
+        present(settingsVC, animated: true)
+    }
+
 }
 
