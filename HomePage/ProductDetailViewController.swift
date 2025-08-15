@@ -99,7 +99,7 @@ class ProductDetailViewController: UIViewController {
                 self.priceLabel.setText(String(format: "$%.2f", product.price))
                 self.categoryLabel.setText(product.category)
                 self.descriptionLabel.text = product.description
-                self.ratingLabel.setText(String(format: "%.1f", product.rate))
+                self.ratingLabel.setText(String(format: "%.1f", product.rating.rate))
                 
                 if let url = URL(string: product.image) {
                     DispatchQueue.global().async {

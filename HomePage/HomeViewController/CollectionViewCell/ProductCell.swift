@@ -90,10 +90,10 @@ class ProductCell: UICollectionViewCell {
     
     /*Bir Product modelinden aldığı verileri hücrede göstermek.
      Yani burası hücreyi dolduran yer.*/
-    func configure(with product: Product) {
+    func configure(with product: ProductSummary) {
         titleLabel.text = product.title
         priceLabel.text = "$\(product.price)"
-        rateLabel.text = "⭐️\(product.rate)"
+        rateLabel.text = "⭐️\(product.rating)"
         
         if let url = URL(string: product.image){
             DispatchQueue.global().async {

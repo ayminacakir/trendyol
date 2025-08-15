@@ -2,10 +2,9 @@ import Foundation
 
 class NetworkManager {
     static let shared = NetworkManager()
-    
     private init() {}
     
-    func fetchProducts(completion: @escaping ([Product]?) -> Void){
+    func fetchProducts(completion: @escaping ([ProductSummary]?) -> Void){
         guard let url = URL(string: "https://fakestoreapi.com/products") else {
             completion(nil)
             return
@@ -23,7 +22,7 @@ class NetworkManager {
             }
             
             do {
-                let products = try JSONDecoder().decode([Product].self,from: data)
+                let products = try JSONDecoder().decode([ProductSummary].self,from: data)
                 completion(products)
             }catch {
                 print("Decoding Error:", error.localizedDescription)
@@ -33,7 +32,7 @@ class NetworkManager {
     }
     
     
-    func fetchProductDetail(id: Int, completion: @escaping (Product?) -> Void) {
+    func fetchProductDetail(id: Int, completion: @escaping (ProductDetail?) -> Void) {
         guard let url = URL(string: "https://fakestoreapi.com/products/\(id)") else {
             completion(nil)
             return
@@ -52,7 +51,7 @@ class NetworkManager {
             }
             
             do {
-                let product = try JSONDecoder().decode(Product.self, from: data)
+                let product = try JSONDecoder().decode(ProductDetail?.self, from: data)
                 completion(product)
             } catch {
                 print("Decoding Error:", error.localizedDescription)
