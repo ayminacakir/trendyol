@@ -5,7 +5,5 @@ struct ProductSummary: Decodable {
     let image: String
     let rating: Rating
         
-        struct Rating: Decodable {
-            let rate: Double
-        }
+       
 }

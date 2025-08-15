@@ -7,8 +7,9 @@ struct ProductDetail: Decodable {
     let description: String
     let rating: Rating
     
-    struct Rating: Decodable {
-        let rate: Double
-    }
+    
 }
 
+struct Rating: Decodable {
+    let rate: Double
+}

@@ -5,18 +5,15 @@ import FirebaseFirestore
 
 class ProfileViewController: UIViewController {
     
-    private let darkModeSwitch: UISwitch = {
-        let uiSwitch = UISwitch()
-        uiSwitch.translatesAutoresizingMaskIntoConstraints = false
-        return uiSwitch
-    }()
+    private let settingsButton: UIButton = {
+           let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular)
+           button.setImage(UIImage(systemName: "gearshape.fill", withConfiguration: config), for: .normal)
+           button.tintColor = .systemBlue 
+           button.translatesAutoresizingMaskIntoConstraints = false
+           return button
+       }()
     
-    private let darkModeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Dark Mode"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -52,12 +49,10 @@ class ProfileViewController: UIViewController {
         view.addSubview(profileImageView)
         view.addSubview(nameLabel)
         view.addSubview(logoutButton)
-        view.addSubview(darkModeLabel)
-        view.addSubview(darkModeSwitch)
+        view.addSubview(settingsButton)
         
         setupLayout()
         loadUserInfo()
-        loadDarkModeSetting()
        
         logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
     }
@@ -84,35 +79,15 @@ class ProfileViewController: UIViewController {
             logoutButton.widthAnchor.constraint(equalToConstant: 120),
             logoutButton.heightAnchor.constraint(equalToConstant: 44),
             
-            darkModeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            darkModeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            
-            darkModeSwitch.centerYAnchor.constraint(equalTo: darkModeLabel.centerYAnchor),
-            darkModeSwitch.leadingAnchor.constraint(equalTo: darkModeLabel.trailingAnchor, constant: 20)
+            settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
         
-        darkModeSwitch.addTarget(self, action: #selector(darkModeSwitchChanged(_:)), for: .valueChanged)
+       
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
     }
+
     
-    @objc private func darkModeSwitchChanged(_ sender: UISwitch) {
-        let isDarkMode = sender.isOn
-        UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
-        applyTheme(isDarkMode: isDarkMode)
-    }
-    
-    private func loadDarkModeSetting() {
-        let isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
-        darkModeSwitch.isOn = isDarkMode
-        applyTheme(isDarkMode: isDarkMode)
-    }
-    
-    private func applyTheme(isDarkMode: Bool) {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            windowScene.windows.forEach { window in
-                window.overrideUserInterfaceStyle = isDarkMode ? .dark: .light
-            }
-        }
-    }
     
     private func loadUserInfo() {
         guard let user = Auth.auth().currentUser else { return }
@@ -183,5 +158,14 @@ class ProfileViewController: UIViewController {
                 print("Çıkış hatası: \(error.localizedDescription)")
             }
         }
+    
+    
+    @objc private func settingsButtonTapped() {
+        let settingsVC = SettingsViewController()
+        settingsVC.modalPresentationStyle = .overFullScreen
+        settingsVC.modalTransitionStyle = .crossDissolve
+        present(settingsVC, animated: true)
+    }
+
 }
 

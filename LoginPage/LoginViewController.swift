@@ -28,6 +28,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.autocapitalizationType = .none
         tf.returnKeyType = .next
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "E-mail",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
         
         let icon = UIImageView(image: UIImage(systemName: "person"))
         icon.tintColor = .gray
@@ -54,6 +58,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.returnKeyType = .done
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "Şifre",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        )
         
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
