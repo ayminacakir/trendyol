@@ -5,6 +5,19 @@ import FirebaseFirestore
 
 class ProfileViewController: UIViewController {
     
+    private let darkModeSwitch: UISwitch = {
+        let uiSwitch = UISwitch()
+        uiSwitch.translatesAutoresizingMaskIntoConstraints = false
+        return uiSwitch
+    }()
+    
+    private let darkModeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Dark Mode"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill // Resmi en-boy oranını koruyarak görünümü dolduracak şekilde büyütür.
@@ -39,9 +52,12 @@ class ProfileViewController: UIViewController {
         view.addSubview(profileImageView)
         view.addSubview(nameLabel)
         view.addSubview(logoutButton)
+        view.addSubview(darkModeLabel)
+        view.addSubview(darkModeSwitch)
         
         setupLayout()
         loadUserInfo()
+        loadDarkModeSetting()
        
         logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
     }
@@ -50,6 +66,9 @@ class ProfileViewController: UIViewController {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
         
         NSLayoutConstraint.activate([
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
@@ -63,8 +82,36 @@ class ProfileViewController: UIViewController {
             logoutButton.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 40),
             logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoutButton.widthAnchor.constraint(equalToConstant: 120),
-            logoutButton.heightAnchor.constraint(equalToConstant: 44)
+            logoutButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            darkModeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            darkModeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            
+            darkModeSwitch.centerYAnchor.constraint(equalTo: darkModeLabel.centerYAnchor),
+            darkModeSwitch.leadingAnchor.constraint(equalTo: darkModeLabel.trailingAnchor, constant: 20)
         ])
+        
+        darkModeSwitch.addTarget(self, action: #selector(darkModeSwitchChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc private func darkModeSwitchChanged(_ sender: UISwitch) {
+        let isDarkMode = sender.isOn
+        UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
+        applyTheme(isDarkMode: isDarkMode)
+    }
+    
+    private func loadDarkModeSetting() {
+        let isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
+        darkModeSwitch.isOn = isDarkMode
+        applyTheme(isDarkMode: isDarkMode)
+    }
+    
+    private func applyTheme(isDarkMode: Bool) {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.windows.forEach { window in
+                window.overrideUserInterfaceStyle = isDarkMode ? .dark: .light
+            }
+        }
     }
     
     private func loadUserInfo() {

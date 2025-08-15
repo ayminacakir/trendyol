@@ -43,7 +43,7 @@ class ProductCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 12
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOpacity = 0.1
