@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Forgot Password?", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
         return button
     }()
 

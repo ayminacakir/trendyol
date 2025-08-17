@@ -28,19 +28,24 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         let homeVC = HomeViewController()
         homeVC.tabBarItem = UITabBarItem(title: "Ana Ekran", image: homeIcon, selectedImage: homeIcon)
         
+        let favoriteVC = FavoriteProductsViewController()
+        favoriteVC.tabBarItem = UITabBarItem(title: "Favoriler", image: UIImage(systemName: "star"), tag: 1)
+        
         let profileVC = ProfileViewController()
-        profileVC.tabBarItem = UITabBarItem(title: "Profil", image: UIImage(systemName: "person.circle"), tag: 1)
+        profileVC.tabBarItem = UITabBarItem(title: "Profil", image: UIImage(systemName: "person.circle"), tag: 2)
         
         let homeNav = UINavigationController(rootViewController: homeVC)
+        let favoriteNav = UINavigationController(rootViewController: favoriteVC)
         let profileNav = UINavigationController(rootViewController: profileVC)
         
-        viewControllers = [homeNav, profileNav]
+        
+        viewControllers = [homeNav, favoriteNav, profileNav ]
         
         updateProfileTabIcon(selected: false)
     }
     // Tab değiştiğinde tetiklenir
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        let isProfileSelected = (selectedIndex == 1)
+        let isProfileSelected = (selectedIndex == 2)
         updateProfileTabIcon(selected: isProfileSelected)
     }
     
@@ -62,8 +67,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             
             DispatchQueue.main.async {
                 if let navControllers = self.viewControllers,
-                   navControllers.count > 1,
-                   let profileNav = navControllers[1] as? UINavigationController {
+                   navControllers.count > 2,
+                   let profileNav = navControllers[2] as? UINavigationController {
                     profileNav.tabBarItem.image = initialsImage?.withRenderingMode(.alwaysOriginal)
                     profileNav.tabBarItem.selectedImage = initialsImage?.withRenderingMode(.alwaysOriginal)
                 }
