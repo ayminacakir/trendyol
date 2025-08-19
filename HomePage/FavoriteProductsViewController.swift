@@ -68,6 +68,16 @@ class FavoriteProductsViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedProduct = favoriteProducts[indexPath.row]
+        let detailVC = ProductDetailViewController()
+        detailVC.productID = selectedProduct.id
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+    
     //  Real-time Firestore listener
     private func observeFavoriteProducts() {
         guard let user = Auth.auth().currentUser else { return }
