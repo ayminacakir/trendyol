@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E703F1172E54C3CC002DA9BB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E703F1162E54C3CC002DA9BB /* FirebaseStorage */; };
 		E7DC46342E40E01300793C6B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E7DC46332E40E01300793C6B /* Lottie */; };
 		E7FA95E72E42A4180041207A /* AppData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7FA95E52E42A4180041207A /* AppData.xcdatamodeld */; };
 		E7FA95E92E430F3D0041207A /* AppLaunchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FA95E82E430F2D0041207A /* AppLaunchManager.swift */; };
@@ -58,6 +59,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E7031E852E415A4C00D8F203 /* LoginPage */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = LoginPage;
 			sourceTree = "<group>";
 		};
@@ -71,31 +74,43 @@
 		};
 		E7A33AE52E3B2CC800A0602A /* trendyolTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = trendyolTests;
 			sourceTree = "<group>";
 		};
 		E7A33AEF2E3B2CC800A0602A /* trendyolUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = trendyolUITests;
 			sourceTree = "<group>";
 		};
 		E7A33B1C2E3B30F900A0602A /* SplashScreen */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = SplashScreen;
 			sourceTree = "<group>";
 		};
 		E7D648792E49CD7100B0B1B3 /* HomePage */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = HomePage;
 			sourceTree = "<group>";
 		};
 		E7FA947B2E41D60A0041207A /* RegistrationScreen */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = RegistrationScreen;
 			sourceTree = "<group>";
 		};
 		E7FA95942E421BF40041207A /* ForgotPassword */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = ForgotPassword;
 			sourceTree = "<group>";
 		};
@@ -110,6 +125,7 @@
 				E7FA95F42E4346EB0041207A /* FirebaseAuth in Frameworks */,
 				E7FA95F62E4346EB0041207A /* FirebaseCore in Frameworks */,
 				E7FA95F82E4366F60041207A /* FirebaseFirestore in Frameworks */,
+				E703F1172E54C3CC002DA9BB /* FirebaseStorage in Frameworks */,
 				E7DC46342E40E01300793C6B /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,7 +162,6 @@
 				E7A33ACB2E3B2CC600A0602A /* trendyol */,
 				E7A33AE52E3B2CC800A0602A /* trendyolTests */,
 				E7A33AEF2E3B2CC800A0602A /* trendyolUITests */,
-				E7DC46322E40E01300793C6B /* Frameworks */,
 				E7A33ACA2E3B2CC600A0602A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -159,13 +174,6 @@
 				E7A33AEC2E3B2CC800A0602A /* trendyolUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E7DC46322E40E01300793C6B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +206,7 @@
 				E7FA95F32E4346EB0041207A /* FirebaseAuth */,
 				E7FA95F52E4346EB0041207A /* FirebaseCore */,
 				E7FA95F72E4366F60041207A /* FirebaseFirestore */,
+				E703F1162E54C3CC002DA9BB /* FirebaseStorage */,
 			);
 			productName = trendyol;
 			productReference = E7A33AC92E3B2CC600A0602A /* trendyol.app */;
@@ -220,8 +229,6 @@
 				E7A33AE52E3B2CC800A0602A /* trendyolTests */,
 			);
 			name = trendyolTests;
-			packageProductDependencies = (
-			);
 			productName = trendyolTests;
 			productReference = E7A33AE22E3B2CC800A0602A /* trendyolTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -243,8 +250,6 @@
 				E7A33AEF2E3B2CC800A0602A /* trendyolUITests */,
 			);
 			name = trendyolUITests;
-			packageProductDependencies = (
-			);
 			productName = trendyolUITests;
 			productReference = E7A33AEC2E3B2CC800A0602A /* trendyolUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -667,6 +672,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E703F1162E54C3CC002DA9BB /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7FA95F02E4346EB0041207A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		E7DC46332E40E01300793C6B /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E7A33CA82E40DADE00A0602A /* XCRemoteSwiftPackageReference "lottie-ios" */;
