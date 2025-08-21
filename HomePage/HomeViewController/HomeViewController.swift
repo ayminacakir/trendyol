@@ -1,4 +1,5 @@
 import UIKit
+import Network
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -11,29 +12,68 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         title = "Home"
         
         setupCollectionView()
-        fetchData()
+        setupNetworkObserver()
+        loadProducts()
     }
     
+    // 🔹 Ağ değişikliklerini dinle
+    private func setupNetworkObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleNetworkChange(_:)),
+            name: .networkStatusChanged,
+            object: nil
+        )
+    }
+    
+    @objc private func handleNetworkChange(_ notification: Notification) {
+        if let isConnected = notification.userInfo?["isConnected"] as? Bool {
+            if isConnected {
+                showAlert(title: "Internet Connected", message: "You are back online!")
+                loadProducts() // tekrar yükle
+            } else {
+                showAlert(title: "No Internet", message: "Please check your connection.")
+            }
+        }
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true)
+    }
+    
+    // 🔹 Ürünleri yükle
+    private func loadProducts() {
+        NetworkManager.shared.fetchProducts { [weak self] products in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                if let products = products {
+                    self.products = products
+                    self.collectionView.reloadData()
+                } else {
+                    self.showAlert(title: "No Internet", message: "Please check your connection and try again.")
+                }
+            }
+        }
+    }
+    
+    // 🔹 CollectionView kurulumu
     func setupCollectionView() {
-        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: view.frame.width / 2 - 16, height: 270)
-        //ekran genişliğini ikiye bölüp biraz boşluk bırakıyoruz.hücre yüksekliği 250 px
-        layout.minimumLineSpacing = 8 //Alt alta olan hücreler arasında 8 px boşluk bırakır.
+        layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
-        //Yan yana olan hücreler arasında 8 px boşluk bırakır
-        
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        //CollectionView’in kenarlarından boşluk bırakır
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        collectionView.delegate = self //hücreye tıklama gibi olayları yönetir.
-        collectionView.dataSource = self // CollectionView’in kaç hücre olacağını ve hücrelerde ne gösterileceğini belirler.
-    
+        collectionView.delegate = self
+        collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
-        collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier) //CollectionView’e hangi hücreyi kullanacağını söylüyoruz.
+        collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(collectionView)
@@ -46,35 +86,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         ])
     }
     
-    func fetchData() {
-        NetworkManager.shared.fetchProducts { [weak self] products in
-            guard let self = self, let products = products else { return }
-            DispatchQueue.main.async {
-                self.products = products
-                self.collectionView.reloadData()
-            }
-        }
-    }
-    
-
+    // 🔹 CollectionView DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("index: \(indexPath.row)")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
         cell.configure(with: products[indexPath.item])
         return cell
-        
-        
     }
     
+    // 🔹 Ürün seçilince detay sayfasına git
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedProduct = products[indexPath.item]
         let detailVC = ProductDetailViewController()
         detailVC.productID = selectedProduct.id
         navigationController?.pushViewController(detailVC, animated: true)
     }
-
 }

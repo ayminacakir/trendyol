@@ -1,12 +1,22 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import Network
 
 class FavoriteProductsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     private var tableView: UITableView!
     private var favoriteProducts: [ProductSummary] = []
     private var favoriteListener: ListenerRegistration?  //Firestore gibi bir gerçek zamanlı veri tabanından gelen değişiklikleri dinleyen listener kaydı.
+    
+    
+    func showNoInternetAlert() {
+        let alert = UIAlertController(title: "No Internet",
+                                      message: "Please check your connection and try again.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +25,17 @@ class FavoriteProductsViewController: UIViewController, UITableViewDelegate, UIT
         
         setupTableView()
         observeFavoriteProducts() // Gerçek zamanlı ürün eklenip çıkarıldığında güncellemyi yakalar
+        
+        NetworkManager.shared.fetchProducts { products in
+            DispatchQueue.main.async {
+                if products == nil {
+                    self.showNoInternetAlert()
+                } else {
+                    // ürünleri göster
+                }
+            }
+        }
+
     }
     
     deinit {

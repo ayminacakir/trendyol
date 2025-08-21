@@ -41,6 +41,14 @@ class ProfileViewController: UIViewController {
     }()
     
     
+    func showNoInternetAlert() {
+        let alert = UIAlertController(title: "No Internet",
+                                      message: "Please check your connection and try again.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -53,8 +61,20 @@ class ProfileViewController: UIViewController {
         
         setupLayout()
         loadUserInfo()
-       
+        
         logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
+        
+        NetworkManager.shared.fetchProducts { products in
+            DispatchQueue.main.async {
+                if products == nil {
+                    self.showNoInternetAlert()
+                } else {
+                    // ürünleri göster
+                }
+            }
+        }
+
+        
     }
     
     private func setupLayout() {
