@@ -5,5 +5,5 @@ struct ProductSummary: Decodable {
     let image: String
     let rating: Rating
         
-       
 }
+

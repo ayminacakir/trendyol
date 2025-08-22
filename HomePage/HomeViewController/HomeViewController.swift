@@ -1,18 +1,50 @@
 import UIKit
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate {
     
     var products: [ProductSummary] = []
+    var filteredProducts: [ProductSummary] = []
     var collectionView: UICollectionView!
+    var searchBar: UISearchBar!
+    var loadingIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .tertiarySystemBackground
         title = "Home"
         
+        setupSearchBar()
         setupCollectionView()
+        setupLoadingIndicator()
         fetchData()
     }
+    func setupSearchBar() {
+            searchBar = UISearchBar()
+            searchBar.placeholder = "Search products"
+            searchBar.delegate = self
+            searchBar.translatesAutoresizingMaskIntoConstraints = false
+            
+            view.addSubview(searchBar)
+            
+            NSLayoutConstraint.activate([
+                searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                searchBar.heightAnchor.constraint(equalToConstant: 44)
+            ])
+        }
+    
+    func setupLoadingIndicator() {
+            loadingIndicator = UIActivityIndicatorView(style: .large)
+            loadingIndicator.color = .gray
+            loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(loadingIndicator)
+            
+            NSLayoutConstraint.activate([
+                loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+        }
     
     func setupCollectionView() {
         
@@ -39,7 +71,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -47,10 +79,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func fetchData() {
+        loadingIndicator.startAnimating() // spinner başlat
+        
         NetworkManager.shared.fetchProducts { [weak self] products in
             guard let self = self, let products = products else { return }
             DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating() // spinner durdur
                 self.products = products
+                self.filteredProducts = products
                 self.collectionView.reloadData()
             }
         }
@@ -58,23 +94,34 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("index: \(indexPath.row)")
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
-        cell.configure(with: products[indexPath.item])
-        return cell
+            return filteredProducts.count
+        }
         
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
+            cell.configure(with: filteredProducts[indexPath.item])
+            return cell
+        }
         
-    }
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let selectedProduct = filteredProducts[indexPath.item]
+            let detailVC = ProductDetailViewController()
+            detailVC.productID = selectedProduct.id
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedProduct = products[indexPath.item]
-        let detailVC = ProductDetailViewController()
-        detailVC.productID = selectedProduct.id
-        navigationController?.pushViewController(detailVC, animated: true)
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            filteredProducts = products
+        } else {
+            filteredProducts = products.filter { $0.title.lowercased().contains(searchText.lowercased()) }
+        }
+        collectionView.reloadData()
     }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
 
 }
