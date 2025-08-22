@@ -223,7 +223,7 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    // ✏️ Kalem butonuna tıklanınca
+    // Kalem butonuna tıklanınca
     @objc private func editButtonTapped() {
         let alert = UIAlertController(title: "Profil Fotoğrafı", message: nil, preferredStyle: .actionSheet)
         

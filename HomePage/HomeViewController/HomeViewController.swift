@@ -150,7 +150,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if searchText.isEmpty {
             filteredProducts = products
         } else {
-            filteredProducts = products.filter { $0.title.lowercased().contains(searchText.lowercased()) }
+            filteredProducts = products.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
         }
         collectionView.reloadData()
     }
